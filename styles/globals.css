@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 html,
 body {
   padding: 0;
@@ -13,4 +17,39 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+.login-card-radius {
+  border-radius: 2.5rem;
+}
+
+.input-field-radius {
+  border-radius: 0.6rem;
+}
+
+.button-black-color {
+  background-color: #454751;
+}
+
+.login-banner-background {
+  background-color: rgba(204, 180, 255) !important;
+}
+
+.background-color {
+  background: linear-gradient(180deg, #faebd9 0%, #f6d0d8 100%);
+}
+
+.card-glass-background {
+  background: rgba(210, 210, 210, 0.5);
+}
+
+.or-login-background {
+  background: #e5d5d5;
+}
+
+.text-off-color {
+  color: #9b8f8e;
+}
+.text-on-color {
+  color: #35384a;
 }
