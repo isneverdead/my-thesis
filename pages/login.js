@@ -3,8 +3,53 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { useState } from 'react';
 import loginBanner from '../public/login_banner.png';
+import { setCookie, destroyCookie } from 'nookies';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const Login = () => {
+  const router = useRouter();
+
+  const [loginData, setloginData] = useState({});
+  const submitLogin = async () => {
+    const { username, password } = loginData;
+
+    const loginInfo = {
+      username: username,
+      password: password,
+    };
+
+    try {
+      const login = await fetch(`http://localhost:3000/api/auth/login`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(loginInfo),
+      });
+
+      const loginResponse = await login.json();
+
+      console.log(loginResponse);
+      setCookie(null, 'jwt', loginResponse.token, {
+        maxAge: 30 * 24 * 60 * 60,
+        path: '/',
+      });
+      // window.localStorage.setItem('jwt', loginResponse.jwt)
+      window.localStorage.setItem(
+        'userData',
+        JSON.stringify(loginResponse.token)
+      );
+      router.push('/');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const logout = async () => {
+    const deletedCookies = await destroyCookie(null, 'jwt');
+    Router.push('/logout');
+  };
   const [showPassword, setShowPassword] = useState(false);
   return (
     <div className='h-screen w-full flex flex-col background-color px-10 font-sans'>
@@ -68,12 +113,24 @@ const Login = () => {
             type='text'
             className='w-full shadow-xl input-field-radius  h-14 px-4 mb-5 mt-10'
             placeholder='Email kamu'
+            onChange={(e) =>
+              setloginData({
+                username: e.target.value,
+                password: loginData.password,
+              })
+            }
           />
           <div className='relative w-full shadow-xl input-field-radius h-14  mb-1 flex flex-row items-center'>
             <input
               type={showPassword ? 'text' : 'password'}
               className='w-full shadow-xl input-field-radius  h-14 px-4 '
               placeholder='Password'
+              onChange={(e) =>
+                setloginData({
+                  username: loginData.username,
+                  password: e.target.value,
+                })
+              }
             />
             <button
               className={`absolute right-6 pt-1 ${
@@ -106,7 +163,11 @@ const Login = () => {
             <span className='text-gray-400'>Lupa password?</span>
           </div>
 
-          <button className='w-full shadow-xl input-field-radius  h-14 px-4 mb-5 button-black-color text-white text-xl font-bold'>
+          <button
+            aria-label='Login'
+            onClick={() => submitLogin()}
+            className='w-full shadow-xl input-field-radius  h-14 px-4 mb-5 button-black-color text-white text-xl font-bold'
+          >
             Masuk
           </button>
           <div className='w-full px-5 h-10 relative flex flex-row justify-center items-center mb-5'>
