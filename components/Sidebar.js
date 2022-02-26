@@ -5,7 +5,10 @@ import Image from 'next/image';
 const Sidebar = () => {
   const [menus, setMenus] = useState('home');
   return (
-    <div className='w-fit h-full hidden sm:flex flex-col border-r-2 px-5'>
+    <div
+      className='w-fit h-full hidden sm:flex flex-col border-r-2 px-5'
+      style={{ borderColor: '#B6B6B6' }}
+    >
       <button
         className={`flex flex-row items-center py-1 px-3 mb-5 ${
           menus === 'home' ? 'rounded-lg shadow-lg bg-white' : ''
