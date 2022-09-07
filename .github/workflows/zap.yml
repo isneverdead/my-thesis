@@ -1,0 +1,13 @@
+name: OWASP ZAP Scanning
+on:
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - master # or the name of your main branch
+jobs:
+  scan:
+    name: Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: OWASP ZAP Full Scan
+        uses: zaproxy/action-full-scan@v0.4.0
